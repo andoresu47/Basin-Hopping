@@ -1,0 +1,41 @@
+########################################################
+# MASTER QE-BH INPUT:
+input.in
+
+#RUN FILE: 
+run.sh
+
+########################################################
+# PRODUCTION RUN "TIGHT" SETTINGS:
+
+# All  MgO(100) surfaces have been fully relaxed 
+# and only the bottom layer is "fixed", along with tighter 
+# QE values.
+#
+# PP cutoff has been set to 20 Ry / 160 Ry
+#
+# COPY-PASTE ACCORDING TO YOUR NEEDS
+
+########################################################
+# 2-LAYER ( accurate enough for E_ads within a few meV) 
+########################################################
+
+# 4x4 (2 layer), 64 MgO atoms:  best for 4 and 5 atoms
+cp input4x4_2L.in   input.in
+
+# 5x5 (2 layer), 100 MgO atoms: for 6 up to 10 atoms
+cp input5x5_2L.in   input.in
+
+########################################################
+# MgO surface and metal atoms ultrasoft pseudopotentials
+########################################################
+
+# Mg   1.00   Mg.pbe-np-van.UPF
+# O    1.00   O.pbe-van_ak.UPF
+
+# Au   1.00   Au.pbe-nd-rrkjus.UPF
+# Ag   1.00   Ag.pbe-d-rrkjus.UPF
+# Cu   1.00   Cu.pbe-d-rrkjus.UPF
+# Pt   1.00   Pt.pbe-nd-rrkjus.UPF
+
+

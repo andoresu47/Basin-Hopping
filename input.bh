@@ -1,0 +1,23 @@
+#################################################### 
+# Basin Hopping input file			   #
+# 						   #
+# How to run: "python3.4 basinhopping.py input.bh" #
+####################################################
+
+&control
+	input_dir = #Path to input files directory.
+	programs_dir = #Path to program files directory.
+/
+&basin_hopping
+	substrate_nat = #Substrate total number of atoms.
+	cluster_ntyp = #[First atom type:Quantity], [Second atom type:Quantity]
+	temperature_K = #Temperature in Kelvin.
+	step_width = #Step width for the basin hopping algorithm.
+	iterations = #Total number of iterations, or steps in the basin hopping execution.
+/
+&random_range
+	x_range = #[xMin:xMax]
+	y_range = #[yMin:yMax]
+	z_range = #[zMin:zMax]
+	z_vacuum = #[VaccumStart:VaccumEnd]
+
