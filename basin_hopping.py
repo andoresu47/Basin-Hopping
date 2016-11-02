@@ -1,12 +1,12 @@
 ##########################################################
 # Implementation of the Basin Hopping algorithm for 	 #
-# structure optimization for bimetallics.				 #
-# 							 							 #
-# Author: Andres Lopez Martinez							 #
-# Advisor: Oliver Paz Borbon							 #
-# 														 #
-# Note: Output folders will be gerenated in current		 #
-# directory. 											 #
+# structure optimization for bimetallics.		 #
+# 							 #
+# Author: Andres Lopez Martinez				 #
+# Advisor: Oliver Paz Borbon				 #
+# 							 #
+# Note: Output folders will be gerenated in current	 #
+# directory. 						 #
 ##########################################################
 
 import glob

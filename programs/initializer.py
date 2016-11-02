@@ -16,6 +16,7 @@ f.close()
 
 f = open(input_file, 'w')
 
+# writes original lines just before the coordinates
 for line in lines2:
 	if line.startswith("ATOMIC_POSITIONS"):
 		f.write(line)
@@ -23,6 +24,7 @@ for line in lines2:
 	else:
 		f.write(line)
 
+# Writes coordinates from specified file
 for line in lines1:
 	f.write(line)
 
