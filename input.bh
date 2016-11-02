@@ -1,10 +1,11 @@
 #################################################### 
-# Basin Hopping input file			   #
-# 						   #
+# Basin Hopping input file			               #
+# 						                           #
 # How to run: "python3.4 basinhopping.py input.bh" #
 ####################################################
 
 &control
+    initialization_file = #Path to initialization file. If no file, then set to "False"
 	input_dir = #Path to input files directory.
 	programs_dir = #Path to program files directory.
 /

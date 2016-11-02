@@ -1,12 +1,12 @@
 ##########################################################
 # Implementation of the Basin Hopping algorithm for 	 #
-# structure optimization for bimetallics.		 #
-# 							 #
-# Author: Andres Lopez Martinez				 #
-# Advisor: Oliver Paz Borbon				 #
-# 							 #
-# Note: Output folders will be gerenated in current	 #
-# directory. 						 #
+# structure optimization for bimetallics.				 #
+# 							 							 #
+# Author: Andres Lopez Martinez							 #
+# Advisor: Oliver Paz Borbon							 #
+# 														 #
+# Note: Output folders will be gerenated in current		 #
+# directory. 											 #
 ##########################################################
 
 import glob
@@ -19,6 +19,7 @@ import datetime
 from subprocess import*
 
 # Variable declarations
+init = ""
 input_dir = ""
 programs_dir = ""
 substrate_nat = ""
@@ -47,6 +48,8 @@ f.close()
 
 for line in lines:
 	l = line.strip()
+	if l.startswith("initialization_file"):
+		init = l.split("initialization_file = ", 1)[1]
 	if l.startswith("input_dir"):
 		input_dir = l.split("input_dir = ", 1)[1]
 	if l.startswith("programs_dir"):
@@ -86,8 +89,11 @@ output_dir_name = get_output_name(cluster_ntyp)
 call(['cp', '-r', input_dir, './' + output_dir_name])
 # The input file gets edited to remain consistent with the number of atoms
 call(['python3.4', programs_dir + '/replace_line.py', output_dir_name + '/input.in', 'nat=n,', 'nat=' + str(int(cluster_nat) + int(substrate_nat))  + ','])
-# The cluster gets randomly generated
-call(['python3.4', programs_dir + '/RandomGenerator.py', output_dir_name + '/input.in', cluster_ntyp, x_range, y_range, z_range, z_vacuum])
+# The cluster gets randomly generated only if there is no initialization file
+if init == "False" or init == "false":
+	call(['python3.4', programs_dir + '/RandomGenerator.py', output_dir_name + '/input.in', cluster_ntyp, x_range, y_range, z_range, z_vacuum])
+else:
+	call(['python3.4', programs_dir + '/initializer.py', init, output_dir_name + '/input.in'])
 
 print("Comienza la iteracion 1  de " + output_dir_name)
 	
