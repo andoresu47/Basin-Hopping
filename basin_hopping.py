@@ -125,8 +125,9 @@ call(['cp', output_dir_name + '/input.in', output_dir_name + '/input1.in'])
 call(['cp', output_dir_name + '/output.out', output_dir_name + '/output1.out'])
 #Naming of final coordinates and energy file
 call('grep \"! \" ' +  output_dir_name + '/output1.out | tail -1 > ' + output_dir_name + '/coord1.xyz', shell = True)
-# -A to take the necessary subsequent lines, -m 1 to take only the first ocurrence of the argument
-call('grep -A ' + str(int(substrate_nat) + 2 + int(cluster_nat)) + ' -m 1 ' + '\"Begin final coordinates\" ' + output_dir_name + '/output1.out >> ' + output_dir_name + '/coord1.xyz', shell = True)
+# -A to take the necessary subsequent lines, head -n to take only the first ocurrence of the argument
+# grep -A 5 "Begin final coordinates" coord.xyz | head -n 5
+call('grep -A ' + str(int(substrate_nat) + 2 + int(cluster_nat)) + ' \"Begin final coordinates\" ' + output_dir_name + '/output1.out | head -n ' + str(int(substrate_nat) + 3 + int(cluster_nat)) + ' >> ' + output_dir_name + '/coord1.xyz', shell = True)
 	
 # Deletion of unnecessary files
 call(['rm', '-r', output_dir_name + '/pwscf.save', output_dir_name + '/output.out'])
@@ -170,7 +171,7 @@ while i < iterations:
 	call(['cp', output_dir_name + '/output.out', output_dir_name + '/output' + str(i + 1) + '.out'])
 	# Creation of final energy and coordinates file
 	call('grep \"! \" ' + output_dir_name + '/output' + str(i + 1) + '.out | tail -1 > ' + output_dir_name + '/coord' + str(i + 1) + '.xyz', shell = True)
-	call('grep -A ' + str(int(substrate_nat) + 2 + int(cluster_nat)) + ' -m 1 ' + '\"Begin final coordinates\" ' + output_dir_name + '/output' + str(i + 1) + '.out >> ' + output_dir_name + '/coord' + str(i + 1) + '.xyz', shell = True)
+	call('grep -A ' + str(int(substrate_nat) + 2 + int(cluster_nat)) + ' \"Begin final coordinates\" ' + output_dir_name + '/output' + str(i + 1) + '.out | head -n ' + str(int(substrate_nat) + 3 + int(cluster_nat)) + ' >> ' + output_dir_name + '/coord' + str(i + 1) + '.xyz', shell = True)
 		
 	# Deletion of unnecessary files
 	call(['rm', '-r', output_dir_name + '/pwscf.save', output_dir_name + '/output.out'])
