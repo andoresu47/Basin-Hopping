@@ -68,7 +68,7 @@ while i < iterations:
 		swap_fail_flag = False
 		call(['python3.4', programs_dir + '/move.py', output_dir_name + '/coord' + str(i) + '.xyz', output_dir_name + '/input.in', step_width, cluster_ntyp])
 
-	print("Comienza la iteracion " + str(i + 1)+ " de " + output_dir_name)
+	print("Iteration " + str(i + 1)+ " of structure:  " + output_dir_name)
 
 	# The "run" script gets executed, with particular emphasis on its completion before continuing with
    	# the subsequent commands in the script
@@ -76,7 +76,7 @@ while i < iterations:
 	(out, err) = subproc.communicate()
 
 	while call('grep -q \"Begin final coordinates\" ' +  output_dir_name + '/output.out', shell = True) == 1:
-		print("Fallo en la convergencia. Comienza nuevamente la iteracion " + str(i + 1) + " de " + output_dir_name)
+		print(" --> SCF failed. Starting again from previous configuration " + str(i + 1) + " of " + output_dir_name)
 		# The Pt coordinates get moved again; ie, the original input gets tossed out
 		call(['python3.4', programs_dir + '/move.py', output_dir_name + '/coord' + str(i) + '.xyz', output_dir_name + '/input.in', step_width, cluster_ntyp])	
 		# The failing output file gets deleted, for the next one to take its place
@@ -90,7 +90,7 @@ while i < iterations:
 	call(['cp', output_dir_name + '/output.out', output_dir_name + '/output' + str(i + 1) + '.out'])
 	# Creation of final energy and coordinates file
 	call('grep \"! \" ' + output_dir_name + '/output' + str(i + 1) + '.out | tail -1 > ' + output_dir_name + '/coord' + str(i + 1) + '.xyz', shell = True)
-	call('grep -A ' + str(int(substrate_nat) + 2 + int(cluster_nat)) + ' \"Begin final coordinates\" ' + output_dir_name + '/output' + str(i + 1) + '.out | head -n ' + str(int(substrate_nat) + 3 + int(cluster_nat)) + ' >> ' + output_dir_name + '/coord' + str(i + 1) + '.xyz', shell = True)
+	call('grep -A ' + str(int(substrate_nat) + 2 + int(cluster_nat)) + ' \"Begin final coordinates\" ' + output_dir_name + '/output' + str(i + 1) + '.out | head -' + str(int(substrate_nat) + 3 + int(cluster_nat)) + ' >> ' + output_dir_name + '/coord' + str(i + 1) + '.xyz', shell = True)
 		
 	# Deletion of unnecessary files
 	call(['rm', '-r', output_dir_name + '/pwscf.save', output_dir_name + '/output.out'])
@@ -107,19 +107,19 @@ while i < iterations:
 	f.close()
 
 	if math.exp((E0 - En)/kBT) > random.uniform(0,1):
-		print("Energia aceptada.")
-		print("Concluida la iteracion " + str(i + 1))
+		print(" --> Basin Hopping MC criteria: Energy accepted! ")
+		print(" --> Finished iteration # " + str(i + 1))
 		i = i + 1
 		continue
 	else:
-		print("Energia rechazada.")
+		print(" --> Basin Hopping MC criteria: Energy rejected!")
 		call(['rm', '-r', output_dir_name + '/input' + str(i + 1) + '.in', output_dir_name + '/output' + str(i + 1) + '.out', output_dir_name + '/coord' + str(i + 1) + '.xyz'])
-		print("Iteracion " + str(i + 1) + " fallida. Comienza de nuevo.")
+		print("Iteration " + str(i + 1) + " failed!. Starting again from previous configuration + random moves ! ")
 		# Swap failing
 		if i%10 == 0:
-			print("Swap failed to converge")
+			print(" --> Swap failed to converge.")
 			swap_fail_flag = True
 
 # Print elapsed time
 time_final = datetime.datetime.now()
-print("\nTiempo total de ejecucion: " + str(time_final - time_initial))
+print("\nTotal execution time: " + str(time_final - time_initial))
